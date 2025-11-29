@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+	<div class="main-content">
+		<h1>{{ articulo.titulo}}</h1>
+
+		<div class="articulo-detail">
+            <img src="{{ articulo.imagen.url }}" alt="{{ articulo.titulo }}" style="max-width: 100%; height: auto;">
+			<p><b>Autor:</b> {{ articulo.autor.username }}</p>
+			<p><b>Fecha de Publicación:</b> {{ articulo.fecha_publicacion|date:"Y-m-d H:i" }}</p>
+            <p><b>Categoría:</b> {{ articulo.categoria.nombre|default:"Sin categoría" }}</p>
+			
+			<div class="articulo-content">
+                <h2>Contenido</h2>
+                <p>{{ articulo.contenido|linebreaks }}</p>
+            </div>
+        </div>
+
+        {% if user.is_authenticated and (user == articulo.autor or user.is_staff) %}
+            <a href="{% url 'articulos:path_modificar_articulo' articulo.pk %}" class="button-action">Editar Artículo</a>
+            <a href="{% url 'articulos:path_eliminar_articulo' articulo.pk %}" class="button-action-danger">Eliminar Artículo</a>
+        {% endif %}
+        
+        <div class="comentarios-section">
+            <h2>Comentarios ({{ articulo.comentarios.count }})</h2>
+            {% for comentario in articulo.comentarios.all %}
+                <div class="comentario-item">
+                    <p><b>{{ comentario.autor.username }}:</b> {{ comentario.texto|linebreaksbr }}</p>
+                    <small>Publicado: {{ comentario.fecha_creacion|date:"Y-m-d H:i" }}</small>
+                </div>
+            {% empty %}
+                <p>Aún no hay comentarios para este artículo.</p>
+            {% endfor %}
+            
+            {% if user.is_authenticated %}
+                <h3 style="margin-top: 30px;">Deja un comentario</h3>
+                <form method="POST" action="{% url 'articulos:path_agregar_comentario' articulo.pk %}">
+                    {% csrf_token %}
+                    {{ form_comentario.as_p }}
+                    <button type="submit" class="button-submit">Comentar</button>
+                </form>
+            {% else %}
+                <p style="margin-top: 20px;"><a href="{% url 'login' %}">Inicia sesión</a> para poder dejar un comentario.</p>
+            {% endif %}
+        </div>
+
+	</div>	
+{% endblock contenido %}

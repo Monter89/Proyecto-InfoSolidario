@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block contenido %}
+    <div style="max-width: 450px; margin: 50px auto; padding: 25px;" class="form-container">
+        <h1>Registrarse como Miembro</h1>
+        <p>Únete a la plataforma InfoSolidario para publicar y comentar acciones solidarias.</p>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            {# Mostrar errores si el formulario no es válido #}
+            {% if form.errors %}
+                <div style="color: red; margin-bottom: 15px;">
+                    <p>Por favor, corrige los siguientes errores:</p>
+                </div>
+            {% endif %}
+
+            {# Renderiza los campos del formulario como párrafos (la forma más simple) #}
+            {{ form.as_p }}
+            
+            <button type="submit" class="button-submit">Registrarme</button>
+        </form>
+
+        <p style="margin-top: 20px;"><small>
+            ¿Ya tienes cuenta? 
+            <a href="{% url 'login' %}">Iniciar sesión aquí.</a>
+        </small></p>
+    </div>
+{% endblock contenido %}

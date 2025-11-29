@@ -1,0 +1,189 @@
+/* -- 1. Estilos Globales y Reset -- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5; /* Un fondo gris muy suave */
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* -- 2. Estilos del Encabezado (Header) -- */
+.main-header {
+    background-color: #0d836c; /* Verde azulado oscuro del logo */
+    color: white;
+    padding: 15px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+}
+
+.logo-area {
+    display: flex; /* Asegura que la imagen y un posible texto estén en línea */
+    align-items: center;
+}
+
+.logo-principal {
+    width: 150px; /* Tamaño del logo ajustado para tu imagen */
+    height: auto;
+    /* Si el logo original tiene fondo blanco y lo quieres integrar con el header verde,
+       considera usar un PNG con transparencia o un filtro si es necesario */
+}
+
+/* -- 3. Estilos de Navegación (Menú) -- */
+.main-nav {
+    display: flex;
+    gap: 25px; /* Más espacio entre los enlaces */
+    align-items: center;
+}
+
+.nav-link {
+    color: white; /* Color del texto de los enlaces */
+    text-decoration: none;
+    font-weight: 600;
+    padding: 8px 15px; /* Más padding para que los botones sean más grandes */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    border-radius: 5px; /* Bordes ligeramente redondeados */
+    text-transform: uppercase; /* Para que los enlaces del menú se vean más profesionales */
+    font-size: 0.95em;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.15); /* Efecto hover con un blanco semitransparente */
+    transform: translateY(-2px); /* Pequeño efecto de elevación */
+}
+
+/* Estilos específicos para los botones de acción como 'PUBLICAR' y 'REGISTRARSE' */
+.nav-link.action-button {
+    background-color: #ffffff; /* Fondo blanco del corazón */
+    color: #0d836c; /* Texto verde del logo */
+    border: 1px solid #ffffff;
+    padding: 8px 18px;
+    font-weight: bold;
+}
+
+.nav-link.action-button:hover {
+    background-color: #f0f2f5; /* Fondo ligeramente gris en hover */
+    color: #0d836c;
+    transform: translateY(-2px);
+}
+
+/* Estilos para el texto de bienvenida del usuario */
+.user-greeting {
+    color: white;
+    font-size: 0.9em;
+    margin-left: 10px;
+}
+
+.user-greeting b {
+    color: #fcfcfc; /* Un blanco muy claro para el nombre de usuario */
+}
+
+
+/* -- 4. Estilos del Contenido Principal -- */
+.main-content {
+    width: 90%;
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 30px; /* Más padding */
+    background-color: white;
+    border-radius: 10px; /* Bordes más redondeados */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); /* Sombra más suave */
+}
+
+/* -- 5. Estilos del Footer -- */
+.main-footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #222; /* Un gris más oscuro */
+    color: #ccc;
+    margin-top: 50px;
+    font-size: 0.85em;
+}
+
+/* -- 6. Estilos de las Páginas Hijas (home.html, contacto.html, etc.) -- */
+.main-content h1 {
+    color: #0d836c; /* Verde azulado del logo para los títulos principales */
+    border-bottom: 2px solid #e0e0e0; /* Una línea más suave */
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.main-content h2 {
+    color: #0d836c; /* Para subtítulos */
+    margin-top: 25px;
+}
+
+/* Estilos para formularios (login, registro, crear artículo) */
+form {
+    background-color: #fdfdfd;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    margin-top: 20px;
+}
+
+form p {
+    margin-bottom: 15px;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form textarea,
+form select {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+form button[type="submit"] {
+    background-color: #0d836c;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    margin-top: 15px;
+}
+
+form button[type="submit"]:hover {
+    background-color: #0a6b5a; /* Un verde más oscuro en hover */
+}
+
+/* -- ESTILOS PARA EL BOTÓN DE LOGOUT DENTRO DE LA NAVEGACIÓN -- */
+
+/* Aplica el estilo base para que se parezca a un enlace */
+.logout-button {
+    /* Resetea estilos por defecto del navegador */
+    background: none; 
+    border: none;
+    padding: 0;
+    margin: 0;
+    
+    /* Hereda color y fuente del enlace nav-link */
+    color: inherit; 
+    font: inherit; 
+    text-decoration: none;
+    cursor: pointer;
+    
+    /* Aplica estilos del enlace nav-link */
+    font-weight: 600; 
+    padding: 8px 15px; 
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    text-transform: uppercase;
+}
+
+/* Aplica el efecto hover del nav-link */
+.logout-button:hover {
+    background-color: rgba(255, 255, 255, 0.15); 
+    transform: translateY(-2px);
+}
