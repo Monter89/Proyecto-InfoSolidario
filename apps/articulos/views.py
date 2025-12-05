@@ -4,14 +4,13 @@ from django.urls import reverse_lazy, reverse # type: ignore
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView # type: ignore
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin # type: ignore
 from django.contrib.auth.decorators import login_required # type: ignore
-from django.contrib.auth import login # type: ignore
 from django.http import HttpResponseRedirect # type: ignore
 from django.contrib import messages # type: ignore
 from django.db.models import Q  # type: ignore
 
 # Asegúrate de que estos archivos existan en la carpeta 'articulos'
 from .models import Articulo, Categoria, Comentario 
-from .forms import FormularioArticulo, FormularioComentario, FormularioRegistroMiembro
+from .forms import FormularioArticulo, FormularioComentario
 
 
 # --- Mixin de Seguridad Personalizado (Requisito de Perfiles) ---
@@ -25,25 +24,9 @@ class AutorOAdminMixin(UserPassesTestMixin, LoginRequiredMixin):
         messages.error(self.request, "No tienes permiso para realizar esta acción.")
         return redirect('articulos:path_listar_articulos')
 
-# ---------------------------------------------
-# 1. VISTA DE REGISTRO (Miembro)
-# ---------------------------------------------
-def registro_miembro(request):
-    if request.method == 'POST':
-        form = FormularioRegistroMiembro(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            messages.success(request, f"¡Bienvenido/a, {user.username}! Ya puedes publicar.")
-            return redirect('articulos:path_listar_articulos') 
-    else:
-        form = FormularioRegistroMiembro()
-    
-    return render(request, 'articulos/registro.html', {'form': form})
-
 
 # ---------------------------------------------
-# 2. LISTAR ARTÍCULOS (ListView)
+# 1. LISTAR ARTÍCULOS (ListView)
 # ---------------------------------------------
 class ArticuloListView(ListView):
     model = Articulo 
@@ -75,7 +58,7 @@ class ArticuloListView(ListView):
 
 
 # ---------------------------------------------
-# 3. CREAR ARTÍCULO (CreateView) - SOLO MIEMBROS
+# 2. CREAR ARTÍCULO (CreateView) - SOLO MIEMBROS
 # ---------------------------------------------
 class ArticuloCreateView(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('login') 
@@ -90,7 +73,7 @@ class ArticuloCreateView(LoginRequiredMixin, CreateView):
 
 
 # ---------------------------------------------
-# 4. DETALLE DE ARTÍCULO (DetailView)
+# 3. DETALLE DE ARTÍCULO (DetailView)
 # ---------------------------------------------
 class ArticuloDetailView(DetailView):
     model = Articulo
@@ -104,7 +87,7 @@ class ArticuloDetailView(DetailView):
 
 
 # ---------------------------------------------
-# 5. MODIFICAR/ELIMINAR ARTÍCULO - SOLO AUTOR/ADMIN
+# 4. MODIFICAR/ELIMINAR ARTÍCULO - SOLO AUTOR/ADMIN
 # ---------------------------------------------
 class ArticuloUpdateView(AutorOAdminMixin, UpdateView):
     model = Articulo
@@ -121,7 +104,7 @@ class ArticuloDeleteView(AutorOAdminMixin, DeleteView):
     success_url = reverse_lazy('articulos:path_listar_articulos')
 
 # ---------------------------------------------
-# 6. AGREGAR COMENTARIO (Función - Requiere Login)
+# 5. AGREGAR COMENTARIO (Función - Requiere Login)
 # ---------------------------------------------
 @login_required(login_url=reverse_lazy('login'))
 def agregar_comentario(request, pk):

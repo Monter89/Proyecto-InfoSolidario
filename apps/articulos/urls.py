@@ -3,15 +3,13 @@ from django.urls import path # type: ignore
 from . import views
 from .views import (
     ArticuloListView, ArticuloDetailView, ArticuloCreateView, 
-    ArticuloUpdateView, ArticuloDeleteView, registro_miembro, agregar_comentario
+    ArticuloUpdateView, ArticuloDeleteView, agregar_comentario
 )
 
 app_name = 'articulos' # El namespace es 'articulos'
 
 urlpatterns = [
-    # Funciones de Miembro
-    path('registro/', registro_miembro, name='path_registro_miembro'),
-
+    
     # CRUD de Artículos (CBVs)
     path('', ArticuloListView.as_view(), name='path_listar_articulos'),
     path('crear/', ArticuloCreateView.as_view(), name='path_crear_articulo'),

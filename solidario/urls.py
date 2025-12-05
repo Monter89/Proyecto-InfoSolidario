@@ -16,6 +16,10 @@ urlpatterns = [
 
     # 2. Enlazar la nueva app 'articulos'
     path('articulos/', include('articulos.urls')), 
+
+    # 3. Enlazar la nueva app 'articulos'
+    path("usuarios/", include("apps.usuarios.urls")),
+
     
 ] 
 
