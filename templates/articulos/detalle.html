@@ -25,16 +25,49 @@
 
     {% endif %}
         
-        <div class="comentarios-section">
-            <h2>Comentarios ({{ articulo.comentarios.count }})</h2>
-            {% for comentario in articulo.comentarios.all %}
-                <div class="comentario-item">
-                    <p><b>{{ comentario.autor.username }}:</b> {{ comentario.texto|linebreaksbr }}</p>
-                    <small>Publicado: {{ comentario.fecha_creacion|date:"Y-m-d H:i" }}</small>
-                </div>
-            {% empty %}
-                <p>Aún no hay comentarios para este artículo.</p>
-            {% endfor %}
+    <div class="comentarios-section">
+    
+        <h2>Comentarios ({{ articulo.comentarios.count }})</h2>
+        
+        {# BUCLE FOR: Recorre todos los comentarios asociados a este artículo #}
+        {% for comentario in articulo.comentarios.all %}
+        
+            <div class="comentario-item" style="border-bottom: 1px solid #eee; padding: 10px 0;">
+            
+            <p><b>{{ comentario.autor.username }}:</b> {{ comentario.texto|linebreaksbr }}</p>
+            
+            <small style="color: #888;">Publicado: {{ comentario.fecha_creacion|date:"Y-m-d H:i" }}</small>
+
+            {# LÓGICA DE SEGURIDAD Y PERMISOS #}
+            
+            {# 1. Primer filtro: Solo preguntamos si el usuario está logueado #}
+            {% if user.is_authenticated %}
+                
+                {# 2. Segundo filtro (La lógica fuerte): #}
+                {# Mostramos los botones SI se cumple ALGUNA de estas 3 condiciones: #}
+                {# A) Es el autor del comentario (user == comentario.autor) #}
+                {# B) Es un Colaborador (user.perfil.es_colaborador) #}
+                {# C) Es un Administrador/Staff (user.is_staff) #}
+                {% if user == comentario.autor or user.perfil.es_colaborador or user.is_staff %}
+                    
+                    <div style="margin-top: 5px;">
+                        <a href="{% url 'articulos:path_editar_comentario' comentario.pk %}" style="font-size: 0.8em; color: blue; margin-right: 10px;">Editar</a>
+                        
+                        <a href="{% url 'articulos:path_eliminar_comentario' comentario.pk %}" style="font-size: 0.8em; color: red;">Eliminar</a>
+                    </div>
+
+                {% endif %} {# Fin del chequeo de permisos #}
+            
+            {% endif %} {# Fin del chequeo de autenticación #}
+
+        </div>
+
+        {# BLOQUE EMPTY: Se ejecuta automáticamente si la lista de comentarios está vacía #}
+        {% empty %}
+            <p>Aún no hay comentarios para este artículo.</p>
+        {% endfor %}
+    </div>
+
             
             {% if user.is_authenticated %}
                 <h3 style="margin-top: 30px;">Deja un comentario</h3>

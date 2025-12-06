@@ -1,73 +1,83 @@
+{# 1. HERENCIA DE PLANTILLA #}
+{# Le decimos a Django que cargue "base.html" (que tiene el menú, logo y footer) #}
+{# y que inserte el contenido de abajo dentro del bloque llamado "contenido". #}
 {% extends 'base.html' %}
 
 {% block contenido %}
     <div class="main-content">
         
-        {# SECCIÓN DE BIENVENIDA (Texto estático) #}
+        {# --- SECCIÓN DE BIENVENIDA (Texto estático) --- #}
         <div style="text-align: center; margin-bottom: 40px;">
-            <h1>BIENVENIDOS A INFOSOLIDARIO</h1>
+            <h1>BIENVENIDOS A INFOSOLIDARIA</h1>
             <p style="font-size: 1.2em; color: #555;">Conectando corazones solidarios en el Litoral.</p>
         </div>
 
         <h2>Últimas Acciones Publicadas</h2>
         <hr>
 
-        {# CONTENEDOR DE LA GRILLA (FLEXBOX) #}
-        {# display: flex -> Pone los elementos uno al lado del otro #}
-        {# flex-wrap: wrap -> Si no entran, bajan a la siguiente línea #}
+        {# --- CONTENEDOR DE LA GRILLA (LAYOUT) --- #}
+        {# Usamos Flexbox para acomodar las tarjetas una al lado de la otra. #}
+        {# gap: 20px -> Espacio entre tarjetas. #}
+        {# flex-wrap: wrap -> Si no entran más en la fila, bajan automáticamente. #}
         <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 20px;">
             
-            {# 2. BUCLE FOR: Recorremos la lista de artículos #}
-            {# "articulos_destacados" viene desde tu archivo views.py #}
+            {# 2. BUCLE FOR: INICIO #}
+            {# Recorremos la lista "articulos_destacados" que enviamos desde views.py #}
+            {# A cada artículo lo llamaremos "a" dentro de este bucle #}
             {% for a in articulos_destacados %}
                 
-                {# TARJETA INDIVIDUAL DEL ARTÍCULO #}
+                {# --- TARJETA INDIVIDUAL (CARD) --- #}
+                {# Cada vuelta del bucle crea una de estas tarjetas #}
                 <div style="border: 1px solid #ddd; border-radius: 8px; width: 300px; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); background: white;">
                     
-                    {# 3. IMAGEN CON ENLACE #}
-                    {# El enlace {% url ... %} lleva al detalle usando el ID (pk) del artículo #}
+                    {# 3. LINK DE LA IMAGEN #}
+                    {# {% url ... %} genera la ruta al detalle usando el ID (pk) del artículo actual #}
                     <a href="{% url 'articulos:path_detalle_articulo' a.pk %}">
                         
-                        {# 4. CONDICIONAL IF: ¿Tiene imagen el artículo? #}
+                        {# 4. CONDICIONAL: ¿TIENE IMAGEN? #}
                         {% if a.imagen %}
-                            {# Si TIENE: Mostramos la foto #}
+                            {# OPCIÓN A: Si tiene foto, la mostramos #}
                             <img src="{{ a.imagen.url }}" alt="{{ a.titulo }}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 5px;">
                         {% else %}
-                            {# Si NO TIENE: Mostramos un cuadro gris por defecto #}
+                            {# OPCIÓN B: Si NO tiene foto, mostramos un cuadro gris #}
                             <div style="width: 100%; height: 200px; background: #eee; display: flex; align-items: center; justify-content: center; border-radius: 5px;">
                                 <p style="color: #888;">Sin imagen</p>
                             </div>
                         {% endif %}
                     </a>
 
-                    {# TÍTULO (Clickeable) #}
+                    {# --- TÍTULO DEL ARTÍCULO --- #}
                     <h3 style="margin: 15px 0 10px 0; font-size: 1.1em;">
+                        {# El título también es un enlace al detalle #}
                         <a href="{% url 'articulos:path_detalle_articulo' a.pk %}" style="text-decoration: none; color: #0d836c;">
                             {{ a.titulo }}
                         </a>
                     </h3>
                     
-                    {# ETIQUETA DE CATEGORÍA #}
+                    {# --- ETIQUETA DE CATEGORÍA (Rubro) --- #}
                     <span style="background-color: #0d836c; color: white; padding: 3px 8px; border-radius: 10px; font-size: 0.8em;">
                         {{ a.categoria.nombre }}
                     </span>
 
-                    {# BOTÓN "LEER MÁS" #}
+                    {# --- BOTÓN LEER MÁS --- #}
                     <div style="margin-top: 15px;">
                         <a href="{% url 'articulos:path_detalle_articulo' a.pk %}" style="text-decoration: none; font-weight: bold; color: #333;">Leer más →</a>
                     </div>
                 </div>
 
-            {# 5. BLOQUE EMPTY: Se ejecuta si la lista está vacía #}
+            {# 5. BLOQUE EMPTY #}
+            {# Esto se muestra SOLO si la lista "articulos_destacados" está vacía #}
             {% empty %}
                 <p>Aún no hay acciones solidarias publicadas.</p>
             {% endfor %}
+            {# FIN DEL BUCLE FOR #}
 
         </div>
         
-        {# BOTÓN FINAL PARA VER TODO #}
+        {# --- BOTÓN FINAL --- #}
+        {# Enlace para ir al listado completo donde están los filtros #}
         <div style="text-align: center; margin-top: 40px;">
             <a href="{% url 'articulos:path_listar_articulos' %}" class="button-action">VER TODAS LAS ACCIONES</a>
         </div>
     </div>
-{% endblock contenido %}    
+{% endblock contenido %}

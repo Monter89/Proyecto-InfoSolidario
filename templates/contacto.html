@@ -1,6 +1,91 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block contenido %}
-    <h1>CONTACTO</h1>
-    <p>Aquí se proporcionará una forma de contacto con el equipo que administra el blog (requisito de la consigna).</p>
+<div class="container my-5">
+    
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold" style="color: #0d836c;">¿Quiénes Somos?</h1>
+        <p class="lead text-muted">Conoce al equipo de desarrollo detrás de InfoSolidaria.</p>
+    </div>
+
+    <div class="row justify-content-center mb-5">
+        
+        <div class="col-md-5 col-lg-4 mb-4">
+            <div class="card shadow-sm h-100 border-0 text-center p-3 hover-effect">
+               <img src="{% static 'img/david.jpg' %}" alt="David Luque" class="card-img-top mx-auto mt-3" style="width: 120px; height: 120px; object-fit: cover; border-radius: 50%; border: 3px solid #e9ecef;">
+  
+                <div class="card-body">
+                    <h3 class="card-title fw-bold">David Luque</h3>
+                    <p class="badge bg-success">Analista en RR.HH & Desarrollador Full Stack</p>
+                    <p class="card-text text-muted small mt-2">
+                        Co-creador de InfoSolidaria. Desarrollo integral de la plataforma: lógica Backend con Django, diseño de Base de Datos y maquetado Frontend.
+                    </p>
+                    
+                    <a href="https://www.linkedin.com/in/luquedavid/" target="_blank" class="btn btn-outline-primary btn-sm mt-3">
+                        <i class="bi bi-linkedin"></i> Ver LinkedIn
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5 col-lg-4 mb-4">
+            <div class="card shadow-sm h-100 border-0 text-center p-3 hover-effect">
+                <img src="{% static 'img/gaston.jpg' %}" alt="Gastón Montero" class="card-img-top mx-auto mt-3" style="width: 120px; height: 120px; object-fit: cover; border-radius: 50%; border: 3px solid #e9ecef;">
+                
+                <div class="card-body">
+                    <h3 class="card-title fw-bold">Gastón Montero</h3>
+                    <p class="badge bg-success">Desarrollador Full Stack</p>
+                    <p class="card-text text-muted small mt-2">
+                        Co-creador de InfoSolidaria. Desarrollo integral de la plataforma: lógica Backend con Django, diseño de Base de Datos y maquetado Frontend.
+                    </p>
+                    
+                    <a href="https://www.linkedin.com/in/gaston-montero/" target="_blank" class="btn btn-outline-primary btn-sm mt-3">
+                        <i class="bi bi-linkedin"></i> Ver LinkedIn
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <hr class="my-5">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="text-center mb-4">
+                <h2 style="color: #0d836c;">Contáctanos</h2>
+                <p>¿Tienes alguna duda sobre el proyecto? Envíanos un mensaje.</p>
+            </div>
+
+            <div class="card shadow p-4 border-0">
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST"> {% csrf_token %}
+        
+        <div class="mb-3">
+            <label class="form-label fw-bold">Nombre Completo</label>
+            <input type="text" name="nombre" class="form-control" required>
+        </div>
+        
+        <div class="mb-3">
+            <label class="form-label fw-bold">Correo Electrónico</label>
+            <input type="email" name="email" class="form-control" required>
+        </div>
+        
+        <div class="mb-3">
+            <label class="form-label fw-bold">Mensaje</label>
+            <textarea name="mensaje" class="form-control" rows="4" required></textarea>
+        </div>
+        
+        <div class="d-grid">
+            <button type="submit" class="btn btn-lg text-white" style="background-color: #0d836c;">Enviar Mensaje</button>
+        </div>
+    </form>
+</div>
 {% endblock contenido %}

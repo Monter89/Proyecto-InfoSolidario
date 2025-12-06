@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+<div class="main-content">
+    <h2>Eliminar Comentario</h2>
+    <p>¿Estás seguro de que deseas eliminar este comentario?</p>
+    <div style="background: #f9f9f9; padding: 10px; border-left: 3px solid #ccc; margin-bottom: 20px;">
+        <p><i>"{{ object.texto }}"</i></p>
+        <small>- Por {{ object.autor.username }}</small>
+    </div>
+
+    <form method="POST">{% csrf_token %}
+        <button type="submit" class="button-submit-danger">CONFIRMAR ELIMINACIÓN</button>
+        <a href="{% url 'articulos:path_detalle_articulo' object.articulo.pk %}" class="button-submit-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock contenido %}

@@ -19,4 +19,7 @@ urlpatterns = [
     
     # Comentarios
     path('comentar/<int:pk>/', agregar_comentario, name='path_agregar_comentario'),
+    # Rutas para Comentarios
+    path('comentario/editar/<int:pk>/', views.ComentarioUpdateView.as_view(), name='path_editar_comentario'),
+    path('comentario/eliminar/<int:pk>/', views.ComentarioDeleteView.as_view(), name='path_eliminar_comentario'),
 ]

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+<div class="main-content">
+    <h2>Editar Comentario</h2>
+    <form method="POST">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="button-submit">Guardar Cambios</button>
+        <a href="{% url 'articulos:path_detalle_articulo' object.articulo.pk %}" class="button-submit-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock contenido %}

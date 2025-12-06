@@ -120,3 +120,47 @@ def agregar_comentario(request, pk):
             messages.success(request, "Comentario publicado correctamente.")
     
     return redirect('articulos:path_detalle_articulo', pk=pk)
+
+# 1. MIXIN DE SEGURIDAD PARA COMENTARIOS
+class PermisoComentarioMixin(UserPassesTestMixin, LoginRequiredMixin):
+    def test_func(self):
+        comentario = self.get_object()
+        usuario = self.request.user
+        
+        # Regla 1: Es el dueño del comentario
+        soy_autor = comentario.autor == usuario
+        
+        # Regla 2: Es un Colaborador (puede moderar cualquier comentario)
+        soy_colaborador = hasattr(usuario, 'perfil') and usuario.perfil.es_colaborador
+        
+        # Regla 3: Es Super Admin
+        soy_admin = usuario.is_staff
+        
+        return soy_autor or soy_colaborador or soy_admin
+
+    def handle_no_permission(self):
+        messages.error(self.request, "No tienes permiso para editar este comentario.")
+        # Si falla, lo mandamos de vuelta al artículo al que pertenece el comentario
+        return redirect('articulos:path_detalle_articulo', pk=self.get_object().articulo.pk)
+
+
+# 2. VISTA PARA EDITAR COMENTARIO
+class ComentarioUpdateView(PermisoComentarioMixin, UpdateView):
+    model = Comentario
+    form_class = FormularioComentario
+    template_name = 'articulos/comentario_modificar.html'
+    
+    def get_success_url(self):
+        messages.success(self.request, "Comentario actualizado.")
+        # Redirige al detalle del artículo padre
+        return reverse('articulos:path_detalle_articulo', kwargs={'pk': self.object.articulo.pk})
+
+
+# 3. VISTA PARA ELIMINAR COMENTARIO
+class ComentarioDeleteView(PermisoComentarioMixin, DeleteView):
+    model = Comentario
+    template_name = 'articulos/comentario_eliminar.html'
+    
+    def get_success_url(self):
+        messages.success(self.request, "Comentario eliminado.")
+        return reverse('articulos:path_detalle_articulo', kwargs={'pk': self.object.articulo.pk})

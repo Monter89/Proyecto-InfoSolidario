@@ -116,7 +116,7 @@ body {
 }
 
 /* Estilos para formularios (login, registro, crear artículo) */
-form {
+.main-content form {
     background-color: #fdfdfd;
     padding: 25px;
     border-radius: 8px;
@@ -128,11 +128,12 @@ form p {
     margin-bottom: 15px;
 }
 
-form input[type="text"],
-form input[type="email"],
-form input[type="password"],
-form textarea,
-form select {
+/* Agregamos .main-content antes para que NO afecte al buscador o login del menú */
+.main-content form input[type="text"],
+.main-content form input[type="email"],
+.main-content form input[type="password"],
+.main-content form textarea,
+.main-content form select {
     width: calc(100% - 20px);
     padding: 10px;
     margin-top: 5px;
@@ -141,7 +142,7 @@ form select {
     font-size: 1em;
 }
 
-form button[type="submit"] {
+.main-content form button[type="submit"] {
     background-color: #0d836c;
     color: white;
     padding: 12px 25px;
@@ -154,9 +155,10 @@ form button[type="submit"] {
     margin-top: 15px;
 }
 
-form button[type="submit"]:hover {
-    background-color: #0a6b5a; /* Un verde más oscuro en hover */
-}
+.main-content form button[type="submit"]:hover {
+    background-color: #0a6b5a;
+} /* Un verde más oscuro en hover */
+
 
 /* -- ESTILOS PARA EL BOTÓN DE LOGOUT DENTRO DE LA NAVEGACIÓN -- */
 
@@ -186,4 +188,39 @@ form button[type="submit"]:hover {
 .logout-button:hover {
     background-color: rgba(255, 255, 255, 0.15); 
     transform: translateY(-2px);
+}
+
+/* Nueva regla para el contenedor de usuario */
+.user-actions {
+    display: flex;       /* Pone los elementos uno al lado del otro */
+    align-items: center; /* Los centra verticalmente */
+    gap: 15px;           /* Espacio entre el saludo y los botones */
+}
+
+/* Ajuste extra para que el formulario del header no moleste */
+.user-actions form {
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+}
+
+/* --- ESTILOS DEL LOGO Y MARCA --- */
+
+.navbar-brand {
+    display: flex;          /* Pone el logo y el texto en fila */
+    align-items: center;    /* Los centra verticalmente para que queden prolijos */
+    gap: 0px;               /* <--- ESTA es la distancia entre el logo y el texto.
+                               Cuanto menor el número, más cerca estarán. */
+    font-size: 1.5rem;      /* Aumentamos un poco el texto también */
+    font-weight: bold;
+}
+
+.navbar-brand img {
+    height: 60px;           /* <--- AQUÍ cambias el tamaño del logo.
+                               Prueba con 55px, 60px o 70px. */
+    width: auto;            /* Mantiene la proporción para que no se deforme */
+    object-fit: contain;
+    margin-right: -10px;
+    padding: 0;
 }
