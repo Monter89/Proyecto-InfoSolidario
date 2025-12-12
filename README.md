@@ -1,31 +1,65 @@
-🔧 Pendientes a completar (para el equipo)
+🤝 InfoSolidaria - Plataforma de Gestión Solidaria del NEA
+InfoSolidaria es una aplicación web desarrollada con Django diseñada para conectar a voluntarios, donantes y organizaciones comunitarias en la región del Litoral argentino (Chaco, Corrientes, Formosa y Misiones).
 
-Estas son las tareas finales para cerrar el proyecto al 100%:
+El objetivo principal es visibilizar y organizar acciones solidarias (como colectas, comedores y ferias) mediante una plataforma centralizada, accesible y confiable.
 
-✔ Comentarios
+✨ Características Principales
+👤 Gestión de Usuarios y Roles
+Registro e Inicio de Sesión: Sistema completo de autenticación de usuarios.
 
-Implementar editar comentario.
+Roles Diferenciados:
 
-Implementar eliminar comentario.
+Miembro: Puede ver iniciativas, comentar y participar.
 
-Permitir que colaboradores puedan moderar comentarios ajenos.
+Colaborador: Permisos especiales para crear, editar y eliminar publicaciones y moderar comentarios.
 
-✔ Categorías
+Administrador (Staff): Control total del sitio desde el panel de administración.
 
-Crear vista + template para crear nuevas categorías (solo colaboradores).
+📰 Gestión de Contenidos (CRUD)
+Publicación de Acciones: Los colaboradores pueden crear artículos con título, imagen, categoría y ubicación.
 
-Botón “Nueva Categoría” en el listado.
+Editor de Texto Enriquecido: Integración con django-ckeditor para dar formato profesional (negritas, listas, citas) a las descripciones.
 
-✔ Home
+Categorización: Organización mediante categorías dinámicas (ej: Colectas, Comedores, Voluntariado).
 
-Mostrar los últimos 5 artículos publicados.
+Sistema de Comentarios: Los usuarios pueden interactuar en cada publicación.
 
-✔ Contacto
+🔍 Búsqueda y Filtros Avanzados
+Buscador Integrado: Búsqueda por palabras clave en el título de las publicaciones.
 
-Completar página con información o formulario básico.
+Filtros Inteligentes:
 
-✔ Permisos de Colaborador
+Filtrar por Categoría.
 
-Permitir al colaborador modificar/eliminar artículos de otros.
+Ordenar por Fecha (Reciente/Antiguo).
 
-Permitirle administración parcial del contenido.
+Ordenar Alfabéticamente (A-Z / Z-A).
+
+Ordenar por Ubicación: Agrupación por provincias del NEA.
+
+🎨 Diseño y Experiencia de Usuario (UI/UX)
+Responsive Design: Interfaz adaptable a dispositivos móviles y escritorio utilizando Bootstrap 5.3.
+
+Estética Moderna: Uso de tarjetas (Cards) con efectos hover, sombras suaves y paleta de colores institucional (Verde #0d836c).
+
+🛠️ Tecnologías Utilizadas
+Lenguaje: Python 3.x
+
+Framework Web: Django 5.x
+
+Base de Datos: SQLite (Entorno de desarrollo)
+
+Frontend: HTML5, CSS3, JavaScript, Bootstrap 5.3, Bootstrap Icons.
+
+Librerías Adicionales:
+
+django-ckeditor (Editor de texto)
+
+Pillow (Manejo de imágenes)
+
+👥 Autores
+Este proyecto fue desarrollado como Proyecto Final para el curso "Informatorio Chaco".
+
+David Luque - Desarrollador Full Stack & Analista
+
+Gastón Montero - Desarrollador Full Stack
