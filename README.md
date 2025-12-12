@@ -67,6 +67,6 @@ Pillow (Manejo de imágenes)
 
 Este proyecto fue desarrollado como Proyecto Final para el curso "Informatorio Chaco".
 
-David Luque - Desarrollador Full Stack & Analista
+David Luque - Desarrollador Full Stack & Analista en RRLL
 
 Gastón Montero - Desarrollador Full Stack
