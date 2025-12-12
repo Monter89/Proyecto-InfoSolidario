@@ -2,10 +2,7 @@
     ESTILO MODERNO 2025 - INFOSOLIDARIA (VERSIÓN COMPLETA)
    ========================================================= */
 
-/* -----------------------------
-   1. GLOBAL
------------------------------- */
-
+/* 1. GLOBAL */
 body {
     font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f3f5f7;
@@ -21,10 +18,7 @@ a {
     text-decoration: none;
 }
 
-/* -----------------------------
-   2. NAVBAR MODERNO
------------------------------- */
-
+/* 2. NAVBAR MODERNO */
 .navbar {
     backdrop-filter: blur(6px);
     background-color: rgba(13, 131, 108, 0.85) !important;
@@ -53,7 +47,7 @@ a {
     transform: translateY(-2px);
 }
 
-/* Botón principal tipo CTA */
+/* Botones principales */
 .btn-highlight,
 .btn-success,
 .button-submit {
@@ -64,6 +58,8 @@ a {
     padding: 12px 20px;
     font-weight: 600;
     cursor: pointer;
+    display: inline-block;
+    text-align: center;
 }
 
 .btn-highlight:hover,
@@ -71,12 +67,10 @@ a {
 .button-submit:hover {
     background: linear-gradient(135deg, #08a783, #0d836c);
     transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(13, 131, 108, 0.3);
 }
 
-/* -----------------------------
-   3. CONTENIDO PRINCIPAL
------------------------------- */
-
+/* 3. CONTENIDO PRINCIPAL */
 .main-content {
     width: 95%;
     max-width: 1200px;
@@ -100,101 +94,60 @@ a {
     margin-top: 25px;
 }
 
-/* -----------------------------
-   4. CARDS / TARJETAS DE ARTÍCULOS
------------------------------- */
+/* 4. CARDS / TARJETAS */
+/* --- TARJETAS (CARDS) UNIFORMES --- */
 
 .card {
-    border-radius: 16px !important;
-    overflow: hidden;
-    background-color: #fff;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    transition: all 0.3s ease-in-out; /* Suaviza la animación */
+    border: none !important;          /* Quitamos bordes feos */
+    border-radius: 12px !important;   /* Bordes redondeados */
+    overflow: hidden;                 /* Para que la imagen respete el borde */
 }
 
+/* Efecto al pasar el mouse (Hover) */
 .hover-effect:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 26px rgba(0,0,0,0.10);
+    transform: translateY(-8px); /* La tarjeta "flota" hacia arriba */
+    box-shadow: 0 15px 30px rgba(13, 131, 108, 0.2) !important; /* Sombra verde suave */
 }
 
-/* -----------------------------
-   5. FORMULARIOS
------------------------------- */
-
-.main-content form {
-    background: #fff;
-    padding: 25px;
-    border-radius: 14px;
-    border: 1px solid #e5e5e5;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+/* Forzar que la imagen siempre tenga el mismo tamaño y no se deforme */
+.card-img-top {
+    height: 200px;       /* Altura fija para la imagen */
+    width: 100%;
+    object-fit: cover;   /* Recorta la imagen para llenar el espacio sin estirarse */
+    object-position: center;
 }
 
-.main-content form input,
+/* Hace que el cuerpo de la tarjeta ocupe el espacio restante */
+.card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* 5. FORMULARIOS */
+/* Quitamos estilos genéricos conflictivos y usamos clases específicas */
+.form-control, 
+.main-content form input:not([type=submit]),
 .main-content form textarea,
 .main-content form select {
+    width: 100%;
+    padding: 12px;
     border-radius: 12px;
     border: 1px solid #ccc;
-    padding: 12px;
-    font-size: 1em;
     background-color: #fafafa;
+    margin-bottom: 15px;
+    box-sizing: border-box; /* Importante para que no se salga del contenedor */
 }
 
 .main-content form input:focus,
-.main-content form textarea:focus,
-.main-content form select:focus {
+.main-content form textarea:focus {
     outline: none;
     border-color: #0d836c;
     background-color: #fff;
     box-shadow: 0 0 0 3px rgba(13, 131, 108, 0.15);
 }
 
-/* Botón principal del formulario */
-.main-content form button[type="submit"] {
-    background: linear-gradient(135deg, #0d836c, #08a783);
-    color: #fff;
-    padding: 12px 32px;
-    border-radius: 10px;
-    font-weight: bold;
-    border: none;
-}
-
-.main-content form button[type="submit"]:hover {
-    transform: translateY(-2px);
-}
-
-/* -----------------------------
-   6. ÁREA DE COMENTARIOS
------------------------------- */
-
-.comentarios-section {
-    margin-top: 35px;
-}
-
-.comentarios-section h2 {
-    margin-bottom: 10px;
-}
-
-/* Textarea grande y moderno */
-.comentarios-section textarea {
-    min-height: 180px !important;
-    width: 100% !important;
-    padding: 14px;
-    font-size: 1.05em;
-    border-radius: 14px;
-    border: 1px solid #ccc;
-    background-color: #fafafa;
-    box-shadow: inset 0 2px 6px rgba(0,0,0,0.05);
-    resize: vertical;
-}
-
-/* Focus moderno */
-.comentarios-section textarea:focus {
-    outline: none;
-    border-color: #0d836c;
-    background-color: #fff;
-    box-shadow: 0 0 0 3px rgba(13, 131, 108, 0.15);
-}
-
-/* BURBUJAS DE COMENTARIOS */
+/* 6. ÁREA DE COMENTARIOS */
 .comentario-item {
     background: #f9fafb;
     padding: 14px;
@@ -204,14 +157,7 @@ a {
     border-left: 4px solid #0d836c;
 }
 
-.comentario-item small {
-    color: #888;
-}
-
-/* -----------------------------
-   7. FOOTER
------------------------------- */
-
+/* 7. FOOTER */
 .main-footer {
     text-align: center;
     padding: 20px;
@@ -220,4 +166,58 @@ a {
     border-top: 1px solid #ddd;
     font-size: 0.85em;
     margin-top: 40px;
+}
+
+/* =========================================
+   ESTILOS PARA EL CONTENIDO DEL ARTÍCULO
+   ========================================= */
+
+/* 1. Estilo general del texto para facilitar la lectura */
+.article-body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: #333;
+}
+
+.article-body p {
+    margin-bottom: 1.5rem;
+}
+
+/* 2. Listas (Viñetas y Números) */
+.article-body ul, .article-body ol {
+    margin-left: 20px;
+    margin-bottom: 1.5rem;
+    padding-left: 20px;
+}
+.article-body li {
+    margin-bottom: 0.5rem;
+}
+
+/* 3. CITAS Y FRASES DESTACADAS (El recuadro gris) */
+/* Aplicamos esto a la etiqueta <blockquote> y a <em> (cursiva) si está sola en un párrafo */
+
+.article-body blockquote, 
+.article-body em {
+    display: block; /* Importante: hace que ocupe todo el ancho */
+    background-color: #f8f9fa;
+    border-left: 5px solid #0d836c; /* La barra verde */
+    padding: 20px 25px;
+    margin: 30px 0;
+    font-style: italic;
+    color: #555;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Corrección para que no rompa cursivas pequeñas dentro de un párrafo normal */
+.article-body p em {
+    display: inline;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    color: inherit;
+    font-weight: normal; 
 }

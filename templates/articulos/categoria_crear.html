@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+<div class="main-content" style="max-width: 500px; margin: 50px auto;">
+    <h1 class="text-center mb-4" style="color: #0d836c;">Nueva Categoría</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        
+        <div class="mb-4">
+            <label class="form-label fw-bold">Nombre de la Categoría</label>
+            {{ form.nombre }} {# Aplicamos estilo al input manualmente si no usas widget en forms #}
+            <script>
+                document.querySelector('#id_nombre').classList.add('form-control');
+            </script>
+        </div>
+
+        <div class="d-grid gap-2">
+            <button type="submit" class="button-submit">GUARDAR CATEGORÍA</button>
+            <a href="{% url 'articulos:path_listar_articulos' %}" class="btn btn-outline-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock contenido %}

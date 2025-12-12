@@ -2,29 +2,48 @@
 {% load static %}
 
 {% block contenido %}
-    <div style="max-width: 450px; margin: 50px auto; padding: 25px;" class="form-container">
-        <h1>Registrarse como Miembro</h1>
-        <p>Únete a la plataforma InfoSolidario para publicar y comentar acciones solidarias.</p>
-        
-        <form method="post">
-            {% csrf_token %}
+<div class="container" style="margin-top: 50px; margin-bottom: 50px;">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
             
-            {# Mostrar errores si el formulario no es válido #}
-            {% if form.errors %}
-                <div style="color: red; margin-bottom: 15px;">
-                    <p>Por favor, corrige los siguientes errores:</p>
+            <div class="main-content p-5 shadow-lg">
+                <h1 class="text-center">Unite a InfoSolidaria</h1>
+                <p class="text-center text-muted mb-4">
+                    Crea tu cuenta para publicar y colaborar.
+                </p>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <ul class="mb-0 ps-3">
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                        <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                                {% for error in form.non_field_errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+
+                    {{ form.as_p }}
+                    
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="button-submit btn-lg">REGISTRARME</button>
+                    </div>
+                </form>
+
+                <div class="text-center mt-4">
+                    <p class="small text-muted mb-0">¿Ya tienes cuenta?</p>
+                    <a href="{% url 'login' %}" class="fw-bold text-success">Inicia sesión aquí</a>
                 </div>
-            {% endif %}
+            </div>
 
-            {# Renderiza los campos del formulario como párrafos (la forma más simple) #}
-            {{ form.as_p }}
-            
-            <button type="submit" class="button-submit">Registrarme</button>
-        </form>
-
-        <p style="margin-top: 20px;"><small>
-            ¿Ya tienes cuenta? 
-            <a href="{% url 'login' %}">Iniciar sesión aquí.</a>
-        </small></p>
+        </div>
     </div>
+</div>
 {% endblock contenido %}

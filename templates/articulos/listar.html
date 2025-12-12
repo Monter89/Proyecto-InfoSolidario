@@ -5,155 +5,128 @@
 
 <div class="container my-5">
 
-    <!-- ENCABEZADO -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="fw-bold text-success" style="color:#0d836c;">Acciones Solidarias</h1>
+            <h1 class="fw-bold" style="color: #0d836c;">Acciones Solidarias</h1>
             <p class="text-muted">Explora, colabora y difunde las iniciativas de la comunidad.</p>
         </div>
-
+        
         {% if user.is_authenticated %}
             {% if user.is_staff or user.perfil and user.perfil.es_colaborador %}
-            <a href="{% url 'articulos:path_crear_articulo' %}" 
-               class="btn-highlight shadow-sm d-flex align-items-center gap-2">
-                <i class="bi bi-plus-lg"></i> Publicar Nueva
-            </a>
+            
+            <div class="d-flex gap-2"> 
+                <a href="{% url 'articulos:path_crear_categoria' %}" 
+                   class="btn btn-outline-success shadow-sm d-flex align-items-center gap-2"
+                   title="Crear nueva categoría">
+                    <i class="bi bi-tags"></i> + Categoría
+                </a>
+
+                <a href="{% url 'articulos:path_crear_articulo' %}" 
+                   class="btn-highlight shadow-sm d-flex align-items-center gap-2">
+                    <i class="bi bi-plus-lg"></i> Publicar Nuevo Artículo
+                </a>
+            </div>
+
             {% endif %}
         {% endif %}
     </div>
 
-    <!-- FILTROS -->
-    <div class="card p-4 mb-5 border-0 shadow-sm bg-white">
-        <form method="GET" class="row g-3 align-items-end">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <form method="GET" class="d-flex gap-2 align-items-center flex-wrap">
+                
+                <div class="flex-grow-1">
+                    <input type="text" name="busqueda" class="form-control mb-0" placeholder="Buscar por título..." value="{{ request.GET.busqueda }}">
+                </div>
+                
+                <div style="min-width: 200px;">
+                    <select name="orden" class="form-select mb-0" onchange="this.form.submit()">
+                        <option value="reciente" {% if request.GET.orden == 'reciente' %}selected{% endif %}>Más Recientes</option>
+                        <option value="antiguo" {% if request.GET.orden == 'antiguo' %}selected{% endif %}>Más Antiguos</option>
+                        <option value="alfabetico" {% if request.GET.orden == 'alfabetico' %}selected{% endif %}>A - Z</option>
+                        <option value="ubicacion" {% if request.GET.orden == 'ubicacion' %}selected{% endif %}>Por Ubicación</option>
+                    </select>
+                </div>
 
-            <!-- Filtrar por categoría -->
-            <div class="col-md-5">
-                <label for="categoria" class="form-label fw-bold text-secondary small">FILTRAR POR CATEGORÍA</label>
-                <select name="categoria" id="categoria" class="form-select" onchange="this.form.submit()">
-                    <option value="">Todas las categorías</option>
-                    {% for c in categorias %}
-                        <option value="{{ c.pk }}" 
-                            {% if request.GET.categoria == c.pk|stringformat:"i" %}selected{% endif %}>
-                            {{ c.nombre }}
-                        </option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <!-- Ordenar por -->
-            <div class="col-md-5">
-                <label for="orden" class="form-label fw-bold text-secondary small">ORDENAR POR</label>
-                <select name="orden" id="orden" class="form-select" onchange="this.form.submit()">
-                    <option value="-fecha_publicacion" 
-                        {% if not request.GET.orden or request.GET.orden == '-fecha_publicacion' %}selected{% endif %}>
-                        Más Recientes
-                    </option>
-                    <option value="antiguedad_asc" {% if request.GET.orden == 'antiguedad_asc' %}selected{% endif %}>
-                        Más Antiguas
-                    </option>
-                    <option value="alfabetico_asc" {% if request.GET.orden == 'alfabetico_asc' %}selected{% endif %}>
-                        A - Z
-                    </option>
-                    <option value="alfabetico_desc" {% if request.GET.orden == 'alfabetico_desc' %}selected{% endif %}>
-                        Z - A
-                    </option>
-                </select>
-            </div>
-
-            <!-- Botón limpiar -->
-            <div class="col-md-2 d-grid">
-                <a href="{% url 'articulos:path_listar_articulos' %}" 
-                   class="btn btn-outline-secondary">
-                    <i class="bi bi-arrow-counterclockwise"></i> Limpiar
+                <button type="submit" class="button-submit m-0 d-flex align-items-center justify-content-center" style="height: 48px; width: 50px;">
+                    <i class="bi bi-search"></i>
+                </button>
+                
+                <a href="{% url 'articulos:path_listar_articulos' %}" class="btn btn-outline-secondary d-flex align-items-center justify-content-center" style="height: 48px; width: 50px;" title="Limpiar filtros">
+                    <i class="bi bi-x-lg"></i>
                 </a>
-            </div>
 
-        </form>
+            </form>
+        </div>
     </div>
 
-    <!-- LISTADO DE ARTÍCULOS -->
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
 
         {% for a in articulos %}
         <div class="col">
             <div class="card h-100 hover-effect border-0">
 
-                <!-- Imagen -->
                 <div style="position: relative;">
                     <a href="{% url 'articulos:path_detalle_articulo' a.pk %}">
                         {% if a.imagen %}
-                            <img src="{{ a.imagen.url }}" class="card-img-top" 
-                                 alt="{{ a.titulo }}" style="height: 220px; object-fit: cover;">
+                            <img src="{{ a.imagen.url }}" class="card-img-top" alt="{{ a.titulo }}">
                         {% else %}
-                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" 
-                                 style="height: 220px;">
+                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center">
                                 <span class="text-muted"><i class="bi bi-image"></i> Sin imagen</span>
                             </div>
                         {% endif %}
                     </a>
 
-                    <!-- Categoría -->
-                    <span class="badge bg-white text-success position-absolute top-0 end-0 m-3 shadow-sm px-3 py-2" 
-                          style="font-weight: 600;">
-                        {{ a.categoria.nombre|default:"General" }}
-                    </span>
+                    <div class="position-absolute top-0 end-0 m-2 d-flex flex-column gap-1 align-items-end">
+                        <span class="badge bg-success shadow-sm">
+                            {{ a.categoria.nombre|default:"General" }}
+                        </span>
+                        {% if a.ubicacion %}
+                        <span class="badge bg-light text-dark border shadow-sm">
+                            <i class="bi bi-geo-alt-fill text-danger"></i> {{ a.ubicacion }}
+                        </span>
+                        {% endif %}
+                    </div>
                 </div>
 
-                <!-- Contenido -->
                 <div class="card-body">
-                    <small class="text-muted d-block mb-2">
-                        <i class="bi bi-calendar3"></i> {{ a.fecha_publicacion|date:"d M Y" }} |
-                        <i class="bi bi-person"></i> {{ a.autor.username }}
-                    </small>
-
                     <h5 class="fw-bold text-dark">
-                        <a href="{% url 'articulos:path_detalle_articulo' a.pk %}" 
-                           class="text-decoration-none text-dark stretched-link">
-                            {{ a.titulo }}
+                        <a href="{% url 'articulos:path_detalle_articulo' a.pk %}" class="text-decoration-none text-dark stretched-link">
+                            {{ a.titulo|truncatechars:40 }}
                         </a>
                     </h5>
-
-                    <p class="text-muted">{{ a.contenido|truncatechars:100 }}</p>
+                    <p class="text-muted small">{{ a.contenido|striptags|truncatechars:100 }}</p>
                 </div>
 
-                <!-- Botones -->
                 <div class="card-footer bg-white border-0 d-flex justify-content-between align-items-center pb-3">
-
-                    <a href="{% url 'articulos:path_detalle_articulo' a.pk %}" 
-                       class="btn btn-sm btn-outline-success">
-                        Ver Detalle
-                    </a>
-
+                    <small class="text-muted">
+                        <i class="bi bi-clock"></i> {{ a.fecha_publicacion|date:"d M Y" }}
+                    </small>
+                    
                     {% if user.is_authenticated %}
-                        {% if user == a.autor or user.is_staff or user.perfil and user.perfil.es_colaborador %}
+                        {% if user == a.autor or user.is_staff or user.perfil.es_colaborador %}
                         <div class="btn-group">
-                            <a href="{% url 'articulos:path_modificar_articulo' a.pk %}" 
-                                class="btn btn-sm btn-light text-primary" title="Editar">
+                            <a href="{% url 'articulos:path_modificar_articulo' a.pk %}" class="btn btn-sm btn-light text-primary" title="Editar">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
-                            <a href="{% url 'articulos:path_eliminar_articulo' a.pk %}" 
-                                class="btn btn-sm btn-light text-danger" title="Eliminar">
+                            <a href="{% url 'articulos:path_eliminar_articulo' a.pk %}" class="btn btn-sm btn-light text-danger" title="Eliminar">
                                 <i class="bi bi-trash"></i>
                             </a>
                         </div>
                         {% endif %}
                     {% endif %}
-
                 </div>
 
             </div>
         </div>
         {% empty %}
-
-        <!-- Resultado vacío -->
-        <div class="col-12 text-center py-5">
-            <div class="alert alert-warning d-inline-block px-5 shadow-sm">
-                <i class="bi bi-search display-6 d-block mb-3"></i>
-                <h4>No se encontraron resultados</h4>
-                <p class="text-muted">Intenta cambiar los filtros o publica la primera acción.</p>
+            <div class="col-12 text-center py-5">
+                <div class="alert alert-info d-inline-block px-5 shadow-sm">
+                    <i class="bi bi-search display-6 d-block mb-3"></i>
+                    <h4>No se encontraron resultados</h4>
+                    <p class="text-muted">Intenta cambiar los filtros o publica la primera acción.</p>
+                </div>
             </div>
-        </div>
-
         {% endfor %}
 
     </div>

@@ -3,7 +3,7 @@ from django.urls import path # type: ignore
 from . import views
 from .views import (
     ArticuloListView, ArticuloDetailView, ArticuloCreateView, 
-    ArticuloUpdateView, ArticuloDeleteView, agregar_comentario
+    ArticuloUpdateView, ArticuloDeleteView, agregar_comentario, CategoriaCreateView
 )
 
 app_name = 'articulos' # El namespace es 'articulos'
@@ -22,4 +22,6 @@ urlpatterns = [
     # Rutas para Comentarios
     path('comentario/editar/<int:pk>/', views.ComentarioUpdateView.as_view(), name='path_editar_comentario'),
     path('comentario/eliminar/<int:pk>/', views.ComentarioDeleteView.as_view(), name='path_eliminar_comentario'),
+    # Rutas para Categorías
+    path('categoria/nueva/', CategoriaCreateView.as_view(), name='path_crear_categoria'),
 ]

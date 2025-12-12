@@ -1,83 +1,98 @@
-{# 1. HERENCIA DE PLANTILLA #}
-{# Le decimos a Django que cargue "base.html" (que tiene el menú, logo y footer) #}
-{# y que inserte el contenido de abajo dentro del bloque llamado "contenido". #}
 {% extends 'base.html' %}
+{% load static %}
 
 {% block contenido %}
-    <div class="main-content">
-        
-        {# --- SECCIÓN DE BIENVENIDA (Texto estático) --- #}
-        <div style="text-align: center; margin-bottom: 40px;">
-            <h1>BIENVENIDOS A INFOSOLIDARIA</h1>
-            <p style="font-size: 1.2em; color: #555;">“Porque cuando nos unimos, cada gesto cuenta. Conectamos personas dispuestas a ayudar con quienes más lo necesitan, creando un puente de esperanza en el Litoral.”</p>
-        </div>
+<div class="container" style="margin-top: 50px; margin-bottom: 50px;">
 
-        <h2>Últimas Acciones Publicadas</h2>
-        <hr>
-
-        {# --- CONTENEDOR DE LA GRILLA (LAYOUT) --- #}
-        {# Usamos Flexbox para acomodar las tarjetas una al lado de la otra. #}
-        {# gap: 20px -> Espacio entre tarjetas. #}
-        {# flex-wrap: wrap -> Si no entran más en la fila, bajan automáticamente. #}
-        <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 20px;">
-            
-            {# 2. BUCLE FOR: INICIO #}
-            {# Recorremos la lista "articulos_destacados" que enviamos desde views.py #}
-            {# A cada artículo lo llamaremos "a" dentro de este bucle #}
-            {% for a in articulos_destacados %}
-                
-                {# --- TARJETA INDIVIDUAL (CARD) --- #}
-                {# Cada vuelta del bucle crea una de estas tarjetas #}
-                <div style="border: 1px solid #ddd; border-radius: 8px; width: 300px; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); background: white;">
-                    
-                    {# 3. LINK DE LA IMAGEN #}
-                    {# {% url ... %} genera la ruta al detalle usando el ID (pk) del artículo actual #}
-                    <a href="{% url 'articulos:path_detalle_articulo' a.pk %}">
-                        
-                        {# 4. CONDICIONAL: ¿TIENE IMAGEN? #}
-                        {% if a.imagen %}
-                            {# OPCIÓN A: Si tiene foto, la mostramos #}
-                            <img src="{{ a.imagen.url }}" alt="{{ a.titulo }}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 5px;">
-                        {% else %}
-                            {# OPCIÓN B: Si NO tiene foto, mostramos un cuadro gris #}
-                            <div style="width: 100%; height: 200px; background: #eee; display: flex; align-items: center; justify-content: center; border-radius: 5px;">
-                                <p style="color: #888;">Sin imagen</p>
-                            </div>
-                        {% endif %}
-                    </a>
-
-                    {# --- TÍTULO DEL ARTÍCULO --- #}
-                    <h3 style="margin: 15px 0 10px 0; font-size: 1.1em;">
-                        {# El título también es un enlace al detalle #}
-                        <a href="{% url 'articulos:path_detalle_articulo' a.pk %}" style="text-decoration: none; color: #0d836c;">
-                            {{ a.titulo }}
-                        </a>
-                    </h3>
-                    
-                    {# --- ETIQUETA DE CATEGORÍA (Rubro) --- #}
-                    <span style="background-color: #0d836c; color: white; padding: 3px 8px; border-radius: 10px; font-size: 0.8em;">
-                        {{ a.categoria.nombre }}
-                    </span>
-
-                    {# --- BOTÓN LEER MÁS --- #}
-                    <div style="margin-top: 15px;">
-                        <a href="{% url 'articulos:path_detalle_articulo' a.pk %}" style="text-decoration: none; font-weight: bold; color: #333;">Leer más →</a>
-                    </div>
-                </div>
-
-            {# 5. BLOQUE EMPTY #}
-            {# Esto se muestra SOLO si la lista "articulos_destacados" está vacía #}
-            {% empty %}
-                <p>Aún no hay acciones solidarias publicadas.</p>
-            {% endfor %}
-            {# FIN DEL BUCLE FOR #}
-
-        </div>
-        
-        {# --- BOTÓN FINAL --- #}
-        {# Enlace para ir al listado completo donde están los filtros #}
-        <div style="text-align: center; margin-top: 40px;">
-            <a href="{% url 'articulos:path_listar_articulos' %}" class="button-action">VER TODAS LAS ACCIONES</a>
-        </div>
+    {# --- 1. SECCIÓN DE BIENVENIDA (Texto actualizado) --- #}
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold" style="color: #0d836c;">BIENVENIDOS A INFOSOLIDARIA</h1>
+        <p class="lead text-muted fst-italic mt-3" style="max-width: 800px; margin: 0 auto;">
+            Porque cuando nos unimos, cada gesto cuenta. Conectamos personas dispuestas a ayudar con quienes más lo necesitan, creando un puente de esperanza en el Litoral.
+        </p>
     </div>
+
+    {# --- 2. TÍTULO DE SECCIÓN --- #}
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+        <h2 class="h3" style="color: #0d836c;">Últimas Acciones Publicadas</h2>
+        <a href="{% url 'articulos:path_listar_articulos' %}" class="btn btn-outline-success btn-sm">
+            Ver todas <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+
+    {# --- 3. GRILLA DE ARTÍCULOS --- #}
+    {# 'row-cols-1': 1 tarjeta en celular #}
+    {# 'row-cols-md-2': 2 tarjetas en tablet #}
+    {# 'row-cols-lg-4': 4 tarjetas en PC #}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+        
+        {% for a in articulos_destacados %}
+            <div class="col">
+                {# 'h-100' fuerza a que todas las tarjetas de la fila tengan el alto de la más alta #}
+                <div class="card h-100 shadow-sm hover-effect">
+                    
+                    {# IMAGEN #}
+                    <div style="position: relative;">
+                        <a href="{% url 'articulos:path_detalle_articulo' a.pk %}">
+                            {% if a.imagen %}
+                                <img src="{{ a.imagen.url }}" class="card-img-top" alt="{{ a.titulo }}">
+                            {% else %}
+                                {# Placeholder gris si no hay imagen, mismo tamaño #}
+                                <div class="card-img-top bg-light d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-image text-muted fs-1"></i>
+                                </div>
+                            {% endif %}
+                        </a>
+                        {# ETIQUETA DE CATEGORÍA FLOTANTE #}
+                        <span class="badge bg-success position-absolute top-0 end-0 m-3 shadow">
+                            {{ a.categoria.nombre }}
+                        </span>
+                    </div>
+
+                    {# CUERPO DE LA TARJETA #}
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">
+                            <a href="{% url 'articulos:path_detalle_articulo' a.pk %}" class="text-decoration-none text-dark stretched-link">
+                                {{ a.titulo|truncatechars:40 }}
+                            </a>
+                        </h5>
+                        <p class="card-text text-muted small flex-grow-1">
+                            {# flex-grow-1 empuja el footer hacia abajo si el texto es corto #}
+                            {{ a.contenido|truncatechars:80 }}
+                        </p>
+                    </div>
+
+                    {# PIE DE LA TARJETA #}
+                    <div class="card-footer bg-white border-0 pt-0 pb-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="bi bi-clock"></i> {{ a.fecha_publicacion|date:"d M" }}
+                            </small>
+                            <small class="text-primary fw-bold" style="font-size: 0.8rem;">
+                                LEER MÁS <i class="bi bi-chevron-right"></i>
+                            </small>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        
+        {% empty %}
+            <div class="col-12 text-center py-5">
+                <div class="alert alert-light border shadow-sm">
+                    <p class="mb-0 text-muted">Aún no hay acciones solidarias destacadas.</p>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+    
+    {# --- 4. BOTÓN DE LLAMADA A LA ACCIÓN --- #}
+    <div class="text-center mt-5">
+        <a href="{% url 'articulos:path_listar_articulos' %}" class="btn-highlight text-decoration-none px-5 py-3">
+            EXPLORAR TODAS LAS INICIATIVAS
+        </a>
+    </div>
+
+</div>
 {% endblock contenido %}

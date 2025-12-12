@@ -1,26 +1,36 @@
 {% extends 'base.html' %}
 
 {% block contenido %}
-    <div class="main-content" style="max-width: 450px; margin: 30px auto;">
-        <h1>Iniciar Sesión</h1>
-        
-        {% if form.errors %}
-            <div class="messages-error">
-                <p>Usuario o contraseña incorrectos. Por favor, intenta de nuevo.</p>
+<div class="container" style="margin-top: 50px; margin-bottom: 50px;">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            
+            <div class="main-content p-5 shadow-lg">
+                <h1 class="text-center mb-4">Iniciar Sesión</h1>
+                
+                {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <i class="bi bi-exclamation-triangle-fill"></i> Usuario o contraseña incorrectos.
+                    </div>
+                {% endif %}
+
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {{ form.as_p }} 
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="button-submit btn-lg">INGRESAR</button>
+                    </div>
+                </form>
+
+                <div class="text-center mt-4">
+                    <p class="small text-muted mb-0">¿Aún no eres Miembro?</p>
+                    <a href="{% url 'usuarios:registro' %}" class="fw-bold text-success">Regístrate aquí</a>
+                </div>
             </div>
-        {% endif %}
 
-        <form method="post">
-            {% csrf_token %}
-            
-            {{ form.as_p }} 
-
-            <button type="submit" class="button-submit">Ingresar</button>
-            <p style="margin-top: 15px;"><small>
-                ¿Aún no eres Miembro? 
-                <a href="{% url 'usuarios:registro' %}">Regístrate aquí.</a>
-            </small></p>
-            
-            </form>
+        </div>
     </div>
+</div>
 {% endblock contenido %}

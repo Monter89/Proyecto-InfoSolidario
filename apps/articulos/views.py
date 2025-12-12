@@ -10,7 +10,7 @@ from django.db.models import Q  # type: ignore
 
 # Asegúrate de que estos archivos existan en la carpeta 'articulos'
 from .models import Articulo, Categoria, Comentario 
-from .forms import FormularioArticulo, FormularioComentario
+from .forms import FormularioArticulo, FormularioComentario, FormularioCategoria
 
 
 # --- Mixin de Seguridad Personalizado (Requisito de Perfiles) ---
@@ -29,9 +29,10 @@ class AutorOAdminMixin(UserPassesTestMixin, LoginRequiredMixin):
 # 1. LISTAR ARTÍCULOS (ListView)
 # ---------------------------------------------
 class ArticuloListView(ListView):
-    model = Articulo 
-    context_object_name = 'articulos' 
-    template_name = 'articulos/listar.html' 
+    model = Articulo
+    template_name = 'articulos/listar.html'
+    context_object_name = 'articulos'
+    paginate_by = 8 
     
     # Implementación de Filtros y Ordenamiento (Requisito de la consigna)
     def get_context_data(self, **kwargs):
@@ -40,20 +41,27 @@ class ArticuloListView(ListView):
         return context
     
     def get_queryset(self):
-        queryset = super().get_queryset()
-        
-        categoria_id = self.request.GET.get('categoria')
-        if categoria_id:
-            queryset = queryset.filter(categoria_id=categoria_id)
-        
+        # 1. Obtenemos todos los artículos
+        queryset = Articulo.objects.all()
+
+        # 2. Filtro de Búsqueda (Search)
+        busqueda = self.request.GET.get('busqueda')
+        if busqueda:
+            queryset = queryset.filter(titulo__icontains=busqueda).distinct()
+
+        # 3. Lógica de Ordenamiento (AQUÍ ESTÁ EL CAMBIO)
         orden = self.request.GET.get('orden')
-        if orden == 'antiguedad_asc': 
-            queryset = queryset.order_by('fecha_publicacion')
-        elif orden == 'alfabetico_asc':
-            queryset = queryset.order_by('titulo')
-        elif orden == 'alfabetico_desc':
-            queryset = queryset.order_by('-titulo')
         
+        if orden == 'antiguo':
+            queryset = queryset.order_by('fecha_publicacion')
+        elif orden == 'alfabetico':
+            queryset = queryset.order_by('titulo')
+        elif orden == 'ubicacion':   # <--- NUEVA OPCIÓN
+            queryset = queryset.order_by('ubicacion')
+        else:
+            # Por defecto: los más nuevos primero
+            queryset = queryset.order_by('-fecha_publicacion')
+            
         return queryset
 
 
@@ -164,3 +172,19 @@ class ComentarioDeleteView(PermisoComentarioMixin, DeleteView):
     def get_success_url(self):
         messages.success(self.request, "Comentario eliminado.")
         return reverse('articulos:path_detalle_articulo', kwargs={'pk': self.object.articulo.pk})
+
+# ---------------------------------------------
+# 6. CREAR CATEGORÍA (CreateView) - SOLO ADMIN/STAFF
+class CategoriaCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    model = Categoria
+    form_class = FormularioCategoria
+    template_name = 'articulos/categoria_crear.html'
+    success_url = reverse_lazy('articulos:path_listar_articulos')
+
+    # Solo Staff o Colaboradores pueden crear categorías
+    def test_func(self):
+        return self.request.user.is_staff or (hasattr(self.request.user, 'perfil') and self.request.user.perfil.es_colaborador)
+
+    def handle_no_permission(self):
+        messages.error(self.request, "Solo los administradores pueden crear categorías.")
+        return redirect('articulos:path_listar_articulos')
